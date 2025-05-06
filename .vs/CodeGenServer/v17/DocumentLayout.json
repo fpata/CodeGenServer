@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\fpata\\Documents\\GitHub\\Clinic\\CodeGenServer\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7830267B-8A53-39F3-6472-E1F55478899B}|CodeGenServer-UI\\CodeGenServer-UI.csproj|c:\\users\\fpata\\documents\\github\\clinic\\codegenserver\\codegenserver-ui\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{7830267B-8A53-39F3-6472-E1F55478899B}|CodeGenServer-UI\\CodeGenServer-UI.csproj|solutionrelative:codegenserver-ui\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\fpata\\Documents\\GitHub\\Clinic\\CodeGenServer\\CodeGenServer-UI\\App.config",
+              "RelativeDocumentMoniker": "CodeGenServer-UI\\App.config",
+              "ToolTip": "C:\\Users\\fpata\\Documents\\GitHub\\Clinic\\CodeGenServer\\CodeGenServer-UI\\App.config",
+              "RelativeToolTip": "CodeGenServer-UI\\App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-05-06T13:21:05.931Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
