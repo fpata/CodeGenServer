@@ -13,54 +13,48 @@ namespace CodeGenServer
     [Route("api/[Controller]/[Action]")]
     public class SchemaController : Controller
     {
-        private string connectStr = String.Empty;
-        private string tableName = String.Empty;
-        private string codeType = String.Empty;
-        private string orm = string.Empty;
-
+       
         [HttpGet]
-        public string GetTables([FromQuery]string strData)
+        public string GetTables(SchemaInputModel schemaInputModel)
         { 
-            SetObjectData(strData);
-            IDBHelper dbhelper = DBFactory.GetDBInstance(this.connectStr, DBType.Sqlite);
+            IDBHelper dbhelper = DBFactory.GetDBInstance(schemaInputModel.connectStr, schemaInputModel.dbType);
             DataTable dtTables = dbhelper.GetTables();
             return DataTableToJSONString(dtTables);
         }
 
         [HttpGet]
-        public string GetColumns([FromQuery] string strData)
+        public string GetColumns(SchemaInputModel schemaInputModel)
         {
-            SetObjectData(strData);
-            IDBHelper dbhelper = DBFactory.GetDBInstance(this.connectStr, DBType.Sqlite);
-            DataTable dtColumns = dbhelper.GetColumns(this.tableName);
+           
+            IDBHelper dbhelper = DBFactory.GetDBInstance(schemaInputModel.connectStr, schemaInputModel.dbType);
+            DataTable dtColumns = dbhelper.GetColumns(schemaInputModel.tableName);
             return DataTableToJSONString(dtColumns);
         }
 
         [HttpGet]
-        public string GetCode([FromQuery] string strData)
+        public string GetCode(SchemaInputModel schemaInputModel)
         {
             String code = String.Empty;
-            SetObjectData(strData);
-            IDBHelper dbhelper = DBFactory.GetDBInstance(this.connectStr, DBType.Sqlite);
-            ICodeHelper codeHelper = DBFactory.GetCodeHelper(this.codeType,ORM.None);
+         
+            IDBHelper dbhelper = DBFactory.GetDBInstance(schemaInputModel.connectStr, schemaInputModel.dbType);
+            ICodeHelper codeHelper = DBFactory.GetCodeHelper(schemaInputModel.codeType);
             DataTable? dtTables = null;
             DataTable? dtColumns = null;
-            if (this.codeType.Equals("CSharpDBContext", StringComparison.InvariantCultureIgnoreCase))
+            if (schemaInputModel.codeType == CodeType.CSharpDBContext)
                   dtTables = dbhelper.GetTables();
-            if (this.codeType.Equals("CSharpEntity", StringComparison.InvariantCultureIgnoreCase)
-            || this.codeType.Equals("TypeScript", StringComparison.InvariantCultureIgnoreCase))
-                 dtColumns = dbhelper.GetColumns(this.tableName);
-             code = codeHelper.GetCode(this.tableName, ORM.None, dtTables, dtColumns);
+            if (schemaInputModel.codeType.ToString().StartsWith("CSharp") || schemaInputModel.codeType == CodeType.TypeScript)
+                 dtColumns = dbhelper.GetColumns(schemaInputModel.tableName);
+             code = codeHelper.GetCode(schemaInputModel.tableName, ORM.None, dtTables, dtColumns);
             return code;
         }
 
         [HttpGet]
-        public String CreateFiles([FromQuery] string strData)
+        public String CreateFiles(SchemaInputModel schemaInputModel)
         {
-            SetObjectData(strData);
-            string fileExtn = this.codeType.StartsWith('C') ? ".cs" : ".ts";
-            IDBHelper dbhelper = DBFactory.GetDBInstance(this.connectStr, DBType.Sqlite);
-            ICodeHelper codeHelper = DBFactory.GetCodeHelper(this.codeType, ORM.None);
+           
+            string fileExtn = schemaInputModel.codeType.ToString().StartsWith("C")? ".cs" : ".ts";
+            IDBHelper dbhelper = DBFactory.GetDBInstance(schemaInputModel.connectStr, schemaInputModel.dbType);
+            ICodeHelper codeHelper = DBFactory.GetCodeHelper(schemaInputModel.codeType);
             DataTable? dtTables = dbhelper.GetTables();
             FileHelper fileHelper = new FileHelper();
             String? tableName = String.Empty;
@@ -109,17 +103,44 @@ namespace CodeGenServer
             JSONString = JSONString.Replace(@"\", "");
             return JSONString.ToString();
         }
-
-        private void SetObjectData([FromQuery] string strData)
-        {
-            JObject objectData = JObject.Parse(strData);
-            this.connectStr = objectData["connectStr"] == null ? String.Empty : (String)objectData["connectStr"];
-            this.tableName = objectData["tableName"] == null ? String.Empty : (String)objectData["tableName"];
-            this.codeType = objectData["codeType"] == null ? String.Empty : (String)objectData["codeType"];
-            var ormval = objectData["ORM"] == null ? "None" : (String)objectData["ORM"];
-            var orm = Enum.Parse<ORM>(ormval, true);
-        }
     }
 
+    public class SchemaInputModel
+    {
+        public string connectStr = String.Empty;
+        public string tableName = String.Empty;
+        public CodeType codeType = CodeType.TypeScript;
+        public string orm = string.Empty;
+        public DBType dbType = DBType.SqlServer;
+    }
+    public enum ORM
+    {
+        None,
+        EntityFramework,
+        Dapper,
+        EFFluentMap,
+        BootStrap,
+        Material
+    }
+
+    public enum DBType
+    {
+        Sqlite,
+        Oracle,
+        MySQL,
+        SqlServer
+    }
+
+    public enum CodeType
+    {
+        CSharpEntity,
+        CSharpDAL,
+        CSharpDBContext,
+        CSharpEFMapping,
+        TypeScript,
+        HTML,
+        HTMLBootStrap,
+        HTMLMaterial
+    }
     
 }

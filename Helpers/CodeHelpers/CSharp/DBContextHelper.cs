@@ -23,9 +23,9 @@ namespace CodeGenServer
             foreach (DataRow dr in dtTables.Rows)
             {
                 sb.Append("\t\tinternal DbSet<");
-                sb.Append(dr["Name"]);
+                sb.Append(dr["Table_Name"]);
                 sb.Append("> ");
-                sb.Append(dr["Name"]);
+                sb.Append(dr["Table_Name"]);
                 sb.Append("s { get; set; }");
                 sb.AppendLine();
             }
@@ -42,7 +42,7 @@ namespace CodeGenServer
             sb.AppendLine("\t\t{");
             foreach (DataRow dr in dtTables.Rows)
             {
-                sb.AppendLine("\t\t\tmodelBuilder.ApplyConfiguration(new " + dr["Name"] + "Configuration());");
+                sb.AppendLine("\t\t\tmodelBuilder.ApplyConfiguration(new " + dr["Table_Name"] + "Configuration());");
             }
             sb.AppendLine("\t\t}");
             sb.AppendLine("\t}");

@@ -1,4 +1,5 @@
 ﻿using CodeGenServer.Helpers.CodeHelpers;
+using CodeGenServer;
 
 namespace CodeGenServer.Helpers.DBHelpers
 {
@@ -21,51 +22,42 @@ namespace CodeGenServer.Helpers.DBHelpers
         }
 
 
-        public static ICodeHelper GetCodeHelper(string code, ORM orm)
+        public static ICodeHelper GetCodeHelper(CodeType codeType)
         {
             ICodeHelper codeHelper = null;
-            switch (code)
+            switch (codeType)
             {
-                case "CSharpEntity":
-                    if (orm == ORM.EFFluentMap)
-                        codeHelper = new EFMappingCodeHelper();
-                    else
+                case CodeType.CSharpEntity:
                         codeHelper = new EntityCodeHelper();
                     break;
-                case "CSharpDAL":
+                case CodeType.CSharpEFMapping:
+                    codeHelper = new EFMappingCodeHelper();
+                    break;  
+                case CodeType.CSharpDAL:
                     codeHelper = new DALCodeHelper();
                     break;
-                case "CSharpDBContext":
+                case CodeType.CSharpDBContext:
                     codeHelper = new DBContextHelper();
                     break;
-                case "TypeScript":
+                case CodeType.TypeScript:
                     codeHelper = new TypScriptCodeHelper();
                     break;
-                case "HTML":
-                    switch (orm)
-                    {
-                        case ORM.None:
-                            codeHelper = new PlainHtmlCodeHelper();
-                            break;
-                        case ORM.BootStrap:
-                            codeHelper = new BootStrapHtmlCodeHelper();
-                            break;
-                        case ORM.Material:
-                            codeHelper = new MaterialHtmlCodeHelper();
-                            break;
-                    }
+                case CodeType.HTML:
+                    codeHelper = new PlainHtmlCodeHelper();
+                    break;
+                case CodeType.HTMLBootStrap:
+                    codeHelper = new BootStrapHtmlCodeHelper();
+                    break;
+                case CodeType.HTMLMaterial:
+                    codeHelper = new MaterialHtmlCodeHelper();
+                    break;
+                    default:
+                    codeHelper = new EntityCodeHelper();
                     break;
             }
             return codeHelper;
-
         }
     }
 
-    public enum DBType
-    {
-        Sqlite,
-        Oracle,
-        MySQL,
-        SqlServer
-    }
+  
 }

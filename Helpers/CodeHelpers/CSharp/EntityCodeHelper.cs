@@ -90,15 +90,5 @@ namespace CodeGenServer
             return sb.ToString();
         }
     }
-    public enum ORM
-    {
-        None,
-        EntityFramework,
-        Dapper,
-        EFFluentMap,
-
-        BootStrap,
-
-        Material
-    }
+  
 }
